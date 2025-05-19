@@ -23,10 +23,25 @@ def serve_cover(filepath):
 @app.route("/audio/<path:filepath>")
 def serve_audio(filepath):
     import os
-    return send_from_directory(
-        os.path.join(RECORDINGS_DIR, os.path.dirname(filepath)),
-        os.path.basename(filepath)
-    )
+
+    # Insert 'Audio' between folder and format/filename
+    parts = filepath.split("/")
+    if len(parts) < 2:
+        return "Invalid audio path", 400
+
+    folder = parts[0]
+    rest = os.path.join(*parts[1:])
+    audio_path = os.path.join(RECORDINGS_DIR, folder, "Audio", rest)
+
+    print(f"🔊 Looking for: {audio_path}")
+
+    if not os.path.exists(audio_path):
+        print("❌ Not found.")
+        return "Audio file not found", 404
+
+    return send_from_directory(os.path.dirname(audio_path), os.path.basename(audio_path))
+
+
 
 if __name__ == "__main__":
     print("🚀 Flask running at http://localhost:5000")

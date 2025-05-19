@@ -32,14 +32,8 @@ def get_cover(folder, subfolder, filename):
         return abort(404)
     return send_from_directory(cover_path, filename)
 
-# 🔊 Serve audio files by format (e.g., Audio/mp3/track.mp3)
-@api.route("/audio/<path:folder>/<format>/<filename>")
-def get_audio(folder, format, filename):
-    folder = unquote(folder)
-    format = unquote(format)
-    filename = unquote(filename)
-    audio_dir = os.path.join(RECORDINGS_DIR, folder, "Audio", format)
-    file_path = os.path.join(audio_dir, filename)
-    if not os.path.exists(file_path):
-        return abort(404)
-    return send_from_directory(audio_dir, filename)
+
+
+
+
+

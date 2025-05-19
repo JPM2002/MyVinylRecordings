@@ -71,25 +71,30 @@ def get_album_detail(folder: str) -> Dict[str, Any]:
     front = find_image("Front Cover")
     back = find_image("Back Cover")
 
-    audio_by_format = {}
     audio_root = os.path.join(album_path, "Audio")
+    audio_mp3 = []
+    downloads = []
+
     if os.path.exists(audio_root):
         for fmt in os.listdir(audio_root):
             fmt_path = os.path.join(audio_root, fmt)
             if os.path.isdir(fmt_path):
-                audio_by_format[fmt] = []
                 for file in sorted(os.listdir(fmt_path)):
-                    if file.lower().endswith((".mp3", ".wav", ".flac", ".aac")):
-                        audio_by_format[fmt].append({
+                    ext = os.path.splitext(file)[1].lower()
+                    if ext in [".mp3", ".wav", ".flac", ".aac"]:
+                        file_entry = {
                             "title": os.path.splitext(file)[0],
-                            "file": f"/audio/{quote(folder)}/{quote(fmt)}/{quote(file)}"
-                        })
+                            "file": f"/audio/{folder}/{fmt}/{file}"
+                        }
+                        if ext == ".mp3":
+                            audio_mp3.append(file_entry)
+                        downloads.append({**file_entry, "format": fmt})
 
     return {
         "folder": folder,
         "metadata": metadata,
         "frontCover": front,
         "backCover": back,
-        "audio": audio_by_format
+        "audio": {"mp3": audio_mp3},
+        "downloads": downloads
     }
-# ✅ End of scan_albums.py
