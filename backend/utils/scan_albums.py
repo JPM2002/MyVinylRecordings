@@ -1,31 +1,95 @@
+# ✅ Start of scan_albums.py
 import os
 import json
+from typing import Dict, Any
 from config import RECORDINGS_DIR
+from urllib.parse import quote
+
+def clean_metadata(metadata: Dict[str, Any]) -> Dict[str, Any]:
+    return {k: ("" if v in [None, "NaN", "nan"] else v) for k, v in metadata.items()}
 
 def list_albums():
     albums = []
-    for folder_name in os.listdir(RECORDINGS_DIR):
-        album_path = os.path.join(RECORDINGS_DIR, folder_name)
+    for folder in os.listdir(RECORDINGS_DIR):
+        album_path = os.path.join(RECORDINGS_DIR, folder)
         metadata_path = os.path.join(album_path, "metadata.json")
 
         if os.path.isdir(album_path) and os.path.exists(metadata_path):
-            with open(metadata_path, "r", encoding="utf-8") as f:
-                metadata = json.load(f)
+            try:
+                with open(metadata_path, "r", encoding="utf-8") as f:
+                    metadata = clean_metadata(json.load(f))
+            except Exception as e:
+                print(f"Skipping {folder}: {e}")
+                continue
 
-            # 🔍 Try to find an image in "Front Cover"
-            cover_image = None
-            cover_folder = os.path.join(album_path, "Front Cover")
-            if os.path.exists(cover_folder):
-                for file in os.listdir(cover_folder):
-                    if file.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
-                        cover_image = f"/cover/{folder_name}/{file}"
-                        break
+            front_cover = None
+            front_dir = os.path.join(album_path, "Front Cover")
+            if os.path.exists(front_dir):
+                encoded_folder = quote(folder)
+
+                preferred = next(
+                    (f for f in os.listdir(front_dir)
+                     if f.lower().startswith("cover.") and f.lower().endswith((".jpg", ".jpeg", ".png", ".webp"))),
+                    None
+                )
+
+                if preferred:
+                    front_cover = f"/cover/{encoded_folder}/Front%20Cover/{quote(preferred)}"
+                else:
+                    for f in os.listdir(front_dir):
+                        if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+                            front_cover = f"/cover/{encoded_folder}/Front%20Cover/{quote(f)}"
+                            break
 
             albums.append({
-                "title": metadata.get("title", folder_name),
-                "artist": metadata.get("artist", ""),
-                "folder": folder_name,
-                "cover": cover_image
+                "folder": folder,
+                "title": metadata.get("Title", folder),
+                "artist": metadata.get("Artist", ""),
+                "cover": front_cover
             })
 
     return albums
+
+def get_album_detail(folder: str) -> Dict[str, Any]:
+    album_path = os.path.join(RECORDINGS_DIR, folder)
+    metadata_path = os.path.join(album_path, "metadata.json")
+
+    if not os.path.exists(metadata_path):
+        return {"error": "Album not found"}
+
+    with open(metadata_path, "r", encoding="utf-8") as f:
+        metadata = clean_metadata(json.load(f))
+
+    def find_image(subdir: str):
+        dir_path = os.path.join(album_path, subdir)
+        if os.path.exists(dir_path):
+            for file in os.listdir(dir_path):
+                if file.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+                    return f"/cover/{quote(folder)}/{quote(subdir)}/{quote(file)}"
+        return None
+
+    front = find_image("Front Cover")
+    back = find_image("Back Cover")
+
+    audio_by_format = {}
+    audio_root = os.path.join(album_path, "Audio")
+    if os.path.exists(audio_root):
+        for fmt in os.listdir(audio_root):
+            fmt_path = os.path.join(audio_root, fmt)
+            if os.path.isdir(fmt_path):
+                audio_by_format[fmt] = []
+                for file in sorted(os.listdir(fmt_path)):
+                    if file.lower().endswith((".mp3", ".wav", ".flac", ".aac")):
+                        audio_by_format[fmt].append({
+                            "title": os.path.splitext(file)[0],
+                            "file": f"/audio/{quote(folder)}/{quote(fmt)}/{quote(file)}"
+                        })
+
+    return {
+        "folder": folder,
+        "metadata": metadata,
+        "frontCover": front,
+        "backCover": back,
+        "audio": audio_by_format
+    }
+# ✅ End of scan_albums.py

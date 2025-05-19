@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import AlbumDetail from "./pages/AlbumDetail";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/album/:albumId" element={<AlbumDetail />} />
+        <Route path="/album/:folder" element={<AlbumDetail />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

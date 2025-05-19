@@ -10,13 +10,16 @@ type Props = {
 };
 
 function AlbumCard({ album }: Props) {
-  const coverUrl = album.cover
-    ? `http://localhost:5000${album.cover}` // ✅ FIXED
-    : "https://via.placeholder.com/150";
-
   return (
-    <Link to={`/album/${encodeURIComponent(album.folder)}`} className="album-card">
-      <img src={coverUrl} alt={album.title} />
+    <Link
+      to={`/album/${encodeURIComponent(album.folder)}`}
+      className="album-card"
+    >
+      <img
+        src={album.cover || "/default-cover.jpg"}
+        alt={`${album.title} cover`}
+        className="album-cover"
+      />
       <h3>{album.title}</h3>
       <p>{album.artist}</p>
     </Link>

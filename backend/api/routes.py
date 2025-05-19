@@ -1,41 +1,44 @@
 import os
-import json
 from urllib.parse import unquote
 from flask import Blueprint, jsonify, send_from_directory, abort
-from utils.scan_albums import list_albums
+from utils.scan_albums import list_albums, get_album_detail
 from config import RECORDINGS_DIR
 
 api = Blueprint("api", __name__)
 
+# 📦 List all albums (basic info: title, artist, cover)
 @api.route("/albums")
 def get_albums():
     return jsonify(list_albums())
 
-@api.route("/album/<path:album>")
-def get_metadata(album):
-    album = unquote(album)
-    metadata_path = os.path.join(RECORDINGS_DIR, album, "metadata.json")
-    if not os.path.exists(metadata_path):
+# 📖 Get full metadata + covers + audio info for one album folder
+@api.route("/album/<path:folder>")
+def get_album_detail_route(folder):
+    folder = unquote(folder)
+    album = get_album_detail(folder)
+    if "error" in album:
         return abort(404)
-    with open(metadata_path, "r", encoding="utf-8") as f:
-        return jsonify(json.load(f))
+    return jsonify(album)
 
-@api.route("/cover/<path:album>/<filename>")
-def get_cover(album, filename):
-    album = unquote(album)
+# 🖼️ Serve front/back cover images
+@api.route("/cover/<path:folder>/<subfolder>/<filename>")
+def get_cover(folder, subfolder, filename):
+    folder = unquote(folder)
+    subfolder = unquote(subfolder)
     filename = unquote(filename)
-    cover_path = os.path.join(RECORDINGS_DIR, album, "Front Cover")
+    cover_path = os.path.join(RECORDINGS_DIR, folder, subfolder)
     file_path = os.path.join(cover_path, filename)
     if not os.path.exists(file_path):
         return abort(404)
     return send_from_directory(cover_path, filename)
 
-@api.route("/audio/<path:album>/<folder>/<filename>")
-def get_audio(album, folder, filename):
-    album = unquote(album)
+# 🔊 Serve audio files by format (e.g., Audio/mp3/track.mp3)
+@api.route("/audio/<path:folder>/<format>/<filename>")
+def get_audio(folder, format, filename):
     folder = unquote(folder)
+    format = unquote(format)
     filename = unquote(filename)
-    audio_dir = os.path.join(RECORDINGS_DIR, album, "Audio", folder)
+    audio_dir = os.path.join(RECORDINGS_DIR, folder, "Audio", format)
     file_path = os.path.join(audio_dir, filename)
     if not os.path.exists(file_path):
         return abort(404)

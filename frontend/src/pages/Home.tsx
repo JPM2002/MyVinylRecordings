@@ -13,21 +13,28 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/albums")
-      .then((res) => res.json())
+    fetch("/api/albums")  // ✅ Use relative path (works with Vite proxy)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
+        console.log("🎵 Albums received:", data);
         setAlbums(data);
-        setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching albums:", err);
+        console.error("❌ Error fetching albums:", err);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
 
   return (
-    <div>
-      <h1>🎵 My Vinyl Collection</h1>
+    <div className="p-6 max-w-6xl mx-auto text-white">
+      <h1 className="text-3xl font-bold mb-6">🎵 My Vinyl Collection</h1>
       {loading ? <p>Loading albums...</p> : <AlbumGrid albums={albums} />}
     </div>
   );
