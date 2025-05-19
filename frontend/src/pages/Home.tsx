@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AlbumGrid from "../components/AlbumGrid";
+import "./Home.css";
 
 type Album = {
   title: string;
@@ -13,7 +14,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/albums")  // ✅ Use relative path (works with Vite proxy)
+    fetch("/api/albums")
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error ${res.status}`);
@@ -33,9 +34,23 @@ function Home() {
   }, []);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto text-white">
-      <h1 className="text-3xl font-bold mb-6">🎵 My Vinyl Collection</h1>
-      {loading ? <p>Loading albums...</p> : <AlbumGrid albums={albums} />}
+    <div className="home-container">
+      <header className="home-header">
+        <h1 className="home-title">
+          <span className="icon">🎵</span> My Vinyl Collection
+        </h1>
+        <p className="home-subtitle">Explore your favorite records</p>
+      </header>
+
+      <main>
+        {loading ? (
+          <p className="loading-text">Loading albums...</p>
+        ) : albums.length > 0 ? (
+          <AlbumGrid albums={albums} />
+        ) : (
+          <p className="no-albums">No albums found.</p>
+        )}
+      </main>
     </div>
   );
 }

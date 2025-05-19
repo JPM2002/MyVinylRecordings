@@ -1,46 +1,110 @@
 .album-detail-container {
   padding: 2rem;
-  max-width: 48rem;
-  margin: auto;
+  max-width: 960px;
+  margin: 4rem auto;
+  background-color: #1a1a1a;
   color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
 }
 
+/* Title & Artist */
 .album-title {
   font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  color: #f9fafb;
 }
 
 .album-artist {
   font-size: 1.25rem;
-  margin-bottom: 1rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #d1d5db;
+}
+
+/* Metadata Section */
+.album-meta {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 2rem;
+  line-height: 1.5;
 }
 
 .album-meta p {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
+}
+
+.album-meta strong {
+  color: #fff;
+}
+
+/* Covers */
+.album-cover-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
 }
 
 .album-cover {
-  margin: 1rem 0;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   max-width: 300px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Audio Tracks */
 .audio-section {
   margin-top: 2rem;
 }
 
 .audio-section h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .track-item {
+  background-color: #2a2a2a;
+  padding: 1rem;
+  border-radius: 0.5rem;
   margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.track-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #f1f5f9;
 }
 
 audio {
   width: 100%;
+  outline: none;
+  border-radius: 0.5rem;
+  background-color: #000;
+}
+
+/* Status messages */
+.status-message {
+  text-align: center;
+  color: #bbb;
+  font-size: 1.125rem;
+  padding-top: 3rem;
+}
+
+.status-error {
+  text-align: center;
+  color: #ff5c5c;
+  font-size: 1.125rem;
+  padding-top: 3rem;
 }

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "./AlbumCard.css";
 
 type Props = {
   album: {
@@ -19,9 +20,12 @@ function AlbumCard({ album }: Props) {
         src={album.cover || "/default-cover.jpg"}
         alt={`${album.title} cover`}
         className="album-cover"
+        loading="lazy"
       />
-      <h3>{album.title}</h3>
-      <p>{album.artist}</p>
+      <div className="album-text">
+        <h3 className="album-title">{album.title}</h3>
+        <p className="album-artist">{album.artist}</p>
+      </div>
     </Link>
   );
 }

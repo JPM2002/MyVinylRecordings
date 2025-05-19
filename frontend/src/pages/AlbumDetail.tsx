@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./AlbumDetail.css";
 
-
 type AudioFile = {
   title: string;
   file: string;
@@ -31,75 +30,81 @@ function AlbumDetail() {
       })
       .then(setAlbum)
       .catch((err) => {
-        console.error(err);
+        console.error("Error loading album:", err);
         setAlbum(null);
       })
       .finally(() => setLoading(false));
   }, [folder]);
 
-  if (loading) return <p>Loading album...</p>;
-  if (!album) return <p>Album not found.</p>;
+  if (loading) return <p className="status-message">Loading album...</p>;
+  if (!album) return <p className="status-error">Album not found.</p>;
 
   const meta = album.metadata;
   const mp3Tracks = album.audio["mp3"] || [];
 
   return (
-    <div className="p-4 max-w-4xl mx-auto text-white">
-      <h1 className="text-4xl font-bold">{meta.Title}</h1>
-      <h2 className="text-xl mb-2">{meta.Artist}</h2>
+    <div className="album-detail-container">
+      <header>
+        <h1 className="album-title">{meta.Title}</h1>
+        <h2 className="album-artist">{meta.Artist}</h2>
+      </header>
 
-      <p className="text-sm mb-2">
-        <strong>Label:</strong> {meta.Label} | <strong>Released:</strong> {meta.Released} |{" "}
-        <strong>Catalog#:</strong> {meta.CatalogNumber}
-      </p>
+      <section className="album-meta">
+        <p>
+          <strong>Label:</strong> {meta.Label} | <strong>Released:</strong>{" "}
+          {meta.Released} | <strong>Catalog#:</strong> {meta.CatalogNumber}
+        </p>
+        <p>
+          <strong>Format:</strong> {meta.Format} | <strong>Country:</strong>{" "}
+          {meta.CountryBought}
+        </p>
+        <p>
+          <strong>Condition:</strong> Media – {meta.MediaCondition || "N/A"},
+          Sleeve – {meta.SleeveCondition || "N/A"}
+        </p>
+        <p>
+          <strong>Price Paid:</strong> {meta.PricePaid || "N/A"}
+        </p>
+        <p>
+          <strong>Notes:</strong> {meta.Notes || "None"}
+        </p>
+      </section>
 
-      <p className="text-sm mb-2">
-        <strong>Format:</strong> {meta.Format} | <strong>Country:</strong> {meta.CountryBought}
-      </p>
-
-      <p className="text-sm mb-4">
-        <strong>Condition:</strong> Media – {meta.MediaCondition || "N/A"}, Sleeve –{" "}
-        {meta.SleeveCondition || "N/A"}
-        <br />
-        <strong>Price Paid:</strong> {meta.PricePaid || "N/A"}
-        <br />
-        <strong>Notes:</strong> {meta.Notes || "None"}
-      </p>
-
-      {album.frontCover && (
-        <img
-          src={album.frontCover}
-          alt="Front Cover"
-          className="mb-4 rounded-lg shadow-lg max-w-md"
-        />
+      {(album.frontCover || album.backCover) && (
+        <div className="album-cover-grid">
+          {album.frontCover && (
+            <img
+              src={album.frontCover}
+              alt="Front Cover"
+              className="album-cover"
+            />
+          )}
+          {album.backCover && (
+            <img
+              src={album.backCover}
+              alt="Back Cover"
+              className="album-cover"
+            />
+          )}
+        </div>
       )}
-      {album.backCover && (
-        <img
-          src={album.backCover}
-          alt="Back Cover"
-          className="mb-4 rounded-lg shadow-lg max-w-md"
-        />
-      )}
 
-      {/* ✅ Show only MP3s here */}
       {mp3Tracks.length > 0 && (
-        <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">MP3 Tracks</h3>
-          <ul className="space-y-2">
+        <section className="audio-section">
+          <h3>🎧 MP3 Tracks</h3>
+          <ul>
             {mp3Tracks.map((track, index) => (
-              <li key={index}>
-                <p>{track.title}</p>
-                <audio controls className="w-full mt-1">
+              <li key={index} className="track-item">
+                <p className="track-title">{track.title}</p>
+                <audio controls>
                   <source src={track.file} type="audio/mp3" />
                   Your browser does not support the audio element.
                 </audio>
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       )}
-
-      {/* 🔜 Future: download panel for FLAC/WAV/RAW */}
     </div>
   );
 }
