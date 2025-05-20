@@ -23,7 +23,7 @@ function AlbumDetail() {
   useEffect(() => {
     if (!folder) return;
 
-    fetch(`/api/album/${encodeURIComponent(folder)}`)
+    fetch(`/api/albums/${encodeURIComponent(folder)}`)
       .then((res) => {
         if (!res.ok) throw new Error("Album not found");
         return res.json();

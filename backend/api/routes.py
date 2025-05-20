@@ -12,7 +12,7 @@ def get_albums():
     return jsonify(list_albums())
 
 # 📖 Get full metadata + covers + audio info for one album folder
-@api.route("/album/<path:folder>")
+@api.route("/albums/<path:folder>")
 def get_album_detail_route(folder):
     folder = unquote(folder)
     album = get_album_detail(folder)

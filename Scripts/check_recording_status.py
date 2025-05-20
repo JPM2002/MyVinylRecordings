@@ -8,6 +8,7 @@ RAW_SUBPATH = os.path.join("Audio", "raw")
 total_albums = 0
 recorded_albums = 0
 not_recorded_albums = []
+recorded_album_names = []
 
 # === Walk Through Each Album Folder ===
 for album_name in os.listdir(RECORDINGS_FOLDER):
@@ -22,6 +23,7 @@ for album_name in os.listdir(RECORDINGS_FOLDER):
         contents = os.listdir(raw_folder)
         if contents:
             recorded_albums += 1
+            recorded_album_names.append(album_name)
         else:
             not_recorded_albums.append(album_name)
     else:
@@ -32,9 +34,14 @@ print(f"\n📀 Total albums: {total_albums}")
 print(f"✅ Albums with raw recordings: {recorded_albums}")
 print(f"❌ Albums without raw recordings: {total_albums - recorded_albums}\n")
 
+if recorded_album_names:
+    print("🎧 Albums already recorded:")
+    for album in recorded_album_names:
+        print(f"  - {album}")
+
 if not_recorded_albums:
-    print("🔎 Missing 'Audio/raw' content in:")
+    print("\n🔎 Missing 'Audio/raw' content in:")
     for album in not_recorded_albums:
         print(f"  - {album}")
 else:
-    print("🎉 All albums have raw audio recorded!")
+    print("\n🎉 All albums have raw audio recorded!")

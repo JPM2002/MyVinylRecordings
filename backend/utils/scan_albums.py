@@ -1,12 +1,21 @@
 # ✅ Start of scan_albums.py
 import os
 import json
+import math
 from typing import Dict, Any
 from config import RECORDINGS_DIR
 from urllib.parse import quote
 
 def clean_metadata(metadata: Dict[str, Any]) -> Dict[str, Any]:
-    return {k: ("" if v in [None, "NaN", "nan"] else v) for k, v in metadata.items()}
+    cleaned = {}
+    for k, v in metadata.items():
+        if v is None or v in ["NaN", "nan", ""]:
+            cleaned[k] = ""
+        elif isinstance(v, float) and math.isnan(v):
+            cleaned[k] = ""
+        else:
+            cleaned[k] = v
+    return cleaned
 
 def list_albums():
     albums = []
@@ -29,7 +38,7 @@ def list_albums():
 
                 preferred = next(
                     (f for f in os.listdir(front_dir)
-                     if f.lower().startswith("cover.") and f.lower().endswith((".jpg", ".jpeg", ".png", ".webp"))),
+                     if f.lower().startswith("cover") and f.lower().endswith((".jpg", ".jpeg", ".png", ".webp"))),
                     None
                 )
 
