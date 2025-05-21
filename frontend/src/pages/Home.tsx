@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AlbumGrid from "../components/AlbumGrid";
-import "./Home.css";
+import styles from "./Home.module.css";
 
 type Album = {
   title: string;
@@ -34,21 +34,21 @@ function Home() {
   }, []);
 
   return (
-    <div className="home-container">
-      <header className="home-header">
-        <h1 className="home-title">
+    <div className={styles.homeContainer}>
+      <header className={styles.homeHeader}>
+        <h1 className={styles.homeTitle}>
           <span className="icon">🎵</span> My Vinyl Collection
         </h1>
-        <p className="home-subtitle">Explore your favorite records</p>
+        <p className={styles.homeSubtitle}>Explore your favorite records</p>
       </header>
 
       <main>
         {loading ? (
-          <p className="loading-text">Loading albums...</p>
+          <p className={styles.loadingText}>Loading albums...</p>
         ) : albums.length > 0 ? (
           <AlbumGrid albums={albums} />
         ) : (
-          <p className="no-albums">No albums found.</p>
+          <p className={styles.noAlbums}>No albums found.</p>
         )}
       </main>
     </div>
