@@ -12,6 +12,7 @@ type Album = {
 function Home() {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetch("/api/albums")
@@ -33,6 +34,10 @@ function Home() {
       });
   }, []);
 
+  const filteredAlbums = albums.filter((album) =>
+    (album.title + album.artist).toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={styles.homeContainer}>
       <header className={styles.homeHeader}>
@@ -43,10 +48,20 @@ function Home() {
       </header>
 
       <main>
+        <div className={styles.searchBar}>
+          <input
+            type="text"
+            placeholder="Search albums or artists..."
+            className={styles.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
         {loading ? (
           <p className={styles.loadingText}>Loading albums...</p>
-        ) : albums.length > 0 ? (
-          <AlbumGrid albums={albums} />
+        ) : filteredAlbums.length > 0 ? (
+          <AlbumGrid albums={filteredAlbums} />
         ) : (
           <p className={styles.noAlbums}>No albums found.</p>
         )}
