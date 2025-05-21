@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "./AlbumDetail.css";
+import styles from "./AlbumDetail.module.css";
 
 type AudioFile = {
   title: string;
@@ -36,20 +36,20 @@ function AlbumDetail() {
       .finally(() => setLoading(false));
   }, [folder]);
 
-  if (loading) return <p className="status-message">Loading album...</p>;
-  if (!album) return <p className="status-error">Album not found.</p>;
+  if (loading) return <p className={styles.statusMessage}>Loading album...</p>;
+  if (!album) return <p className={styles.statusError}>Album not found.</p>;
 
   const meta = album.metadata;
   const mp3Tracks = album.audio["mp3"] || [];
 
   return (
-    <div className="album-detail-container">
+    <div className={styles.albumDetailContainer}>
       <header>
-        <h1 className="album-title">{meta.Title}</h1>
-        <h2 className="album-artist">{meta.Artist}</h2>
+        <h1 className={styles.albumTitle}>{meta.Title}</h1>
+        <h2 className={styles.albumArtist}>{meta.Artist}</h2>
       </header>
 
-      <section className="album-meta">
+      <section className={styles.albumMeta}>
         <p>
           <strong>Label:</strong> {meta.Label} | <strong>Released:</strong>{" "}
           {meta.Released} | <strong>Catalog#:</strong> {meta.CatalogNumber}
@@ -71,31 +71,33 @@ function AlbumDetail() {
       </section>
 
       {(album.frontCover || album.backCover) && (
-        <div className="album-cover-grid">
+        <div className={styles.albumCoverGrid}>
           {album.frontCover && (
             <img
               src={album.frontCover}
               alt="Front Cover"
-              className="album-cover"
+              className={styles.albumCover}
             />
           )}
           {album.backCover && (
             <img
               src={album.backCover}
               alt="Back Cover"
-              className="album-cover"
+              className={styles.albumCover}
             />
           )}
         </div>
       )}
 
       {mp3Tracks.length > 0 && (
-        <section className="audio-section">
+        <section className={styles.audioSection}>
           <h3>🎧 MP3 Tracks</h3>
           <ul>
             {mp3Tracks.map((track, index) => (
-              <li key={index} className="track-item">
-                <p className="track-title">{track.title}</p>
+              <li key={index} className={styles.trackItem}>
+                <p className={styles.trackTitle}>
+                  {index + 1 < 10 ? "0" + (index + 1) : index + 1} – {track.title}
+                </p>
                 <audio controls>
                   <source src={track.file} type="audio/mp3" />
                   Your browser does not support the audio element.

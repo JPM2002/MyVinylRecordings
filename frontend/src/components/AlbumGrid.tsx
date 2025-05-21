@@ -1,5 +1,5 @@
 import AlbumCard from "./AlbumCard";
-import "./AlbumGrid.css"; // Optional: add grid styles
+import styles from "./AlbumGrid.module.css";
 
 type Props = {
   albums: {
@@ -12,7 +12,7 @@ type Props = {
 
 function AlbumGrid({ albums }: Props) {
   return (
-    <div className="album-grid">
+    <div className={styles.albumGrid}>
       {albums.map((album) => (
         <AlbumCard key={album.folder} album={album} />
       ))}
