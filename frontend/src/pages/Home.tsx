@@ -9,10 +9,14 @@ type Album = {
   cover: string | null;
 };
 
+type SortOption = "title-asc" | "title-desc" | "artist-asc" | "artist-desc";
+
 function Home() {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+ const [sortOption, setSortOption] = useState<SortOption>("artist-asc");
+
 
   useEffect(() => {
     fetch("/api/albums")
@@ -34,9 +38,19 @@ function Home() {
       });
   }, []);
 
-  const filteredAlbums = albums.filter((album) =>
-    (album.title + album.artist).toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSort = (a: Album, b: Album): number => {
+    const key = sortOption.startsWith("title") ? "title" : "artist";
+    const order = sortOption.endsWith("desc") ? -1 : 1;
+    return a[key].localeCompare(b[key]) * order;
+  };
+
+  const filteredAlbums = albums
+    .filter(
+      (album) =>
+        album.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        album.artist.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort(handleSort);
 
   return (
     <div className={styles.homeContainer}>
@@ -45,19 +59,30 @@ function Home() {
           <span className="icon">🎵</span> My Vinyl Collection
         </h1>
         <p className={styles.homeSubtitle}>Explore your favorite records</p>
-      </header>
 
-      <main>
-        <div className={styles.searchBar}>
+        <div className={styles.controls}>
           <input
             type="text"
             placeholder="Search albums or artists..."
-            className={styles.searchInput}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.searchInput}
           />
-        </div>
 
+          <select
+            className={styles.sortDropdown}
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value as SortOption)}
+          >
+            <option value="artist-asc">Artist (A–Z)</option>
+            <option value="artist-desc">Artist (Z–A)</option>
+            <option value="title-asc">Title (A–Z)</option>
+            <option value="title-desc">Title (Z–A)</option>
+          </select>
+        </div>
+      </header>
+
+      <main>
         {loading ? (
           <p className={styles.loadingText}>Loading albums...</p>
         ) : filteredAlbums.length > 0 ? (
