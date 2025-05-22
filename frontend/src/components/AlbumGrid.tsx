@@ -7,6 +7,11 @@ type Props = {
     artist: string;
     folder: string;
     cover: string | null;
+    metadata?: {
+      Format?: string;
+      Released?: number;
+      CountryBought?: string;
+    };
   }[];
 };
 
@@ -14,7 +19,13 @@ function AlbumGrid({ albums }: Props) {
   return (
     <div className={styles.albumGrid}>
       {albums.map((album) => (
-        <AlbumCard key={album.folder} album={album} />
+        <AlbumCard
+          key={album.folder}
+          album={{
+            ...album,
+            metadata: album.metadata || {}, // ensure fallback
+          }}
+        />
       ))}
     </div>
   );

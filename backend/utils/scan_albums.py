@@ -54,8 +54,14 @@ def list_albums():
                 "folder": folder,
                 "title": metadata.get("Title", folder),
                 "artist": metadata.get("Artist", ""),
-                "cover": front_cover
+                "cover": front_cover,
+                "metadata": {
+                    "Format": metadata.get("Format", ""),
+                    "Released": metadata.get("Released", ""),
+                    "CountryBought": metadata.get("CountryBought", ""),
+                }
             })
+
 
     return albums
 

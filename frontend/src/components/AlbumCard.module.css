@@ -46,3 +46,21 @@
   text-overflow: ellipsis;
   line-height: 1.2;
 }
+
+.tagRow {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  font-size: 0.7rem;
+  background-color: #2f2f2f;
+  color: #cbd5e1;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid #444;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
