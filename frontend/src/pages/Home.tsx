@@ -105,7 +105,7 @@ function Home() {
         </h1>
         <p className={styles.homeSubtitle}>Explore your favorite records</p>
         <button onClick={toggleTheme} className={styles.themeToggle}>
-  {theme === "dark" ? "🌞 Light" : "🌙 Dark"}
+  {theme === "dark" ? "Light" : "Dark"}
 </button>
 
         <div className={styles.controls}>
@@ -115,6 +115,7 @@ function Home() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
+            
           />
 
           <select
@@ -138,18 +139,18 @@ function Home() {
               onChange={(selected) => setSelectedFormats(selected.map((s) => s.value))}
               classNamePrefix="reactSelect"
               className="reactSelect"
-              theme={(theme) => ({
-                ...theme,
+              theme={(base) => ({
+                ...base,
                 colors: {
-                  ...theme.colors,
-                  primary25: "#374151",
+                  ...base.colors,
+                  primary25: theme === "dark" ? "#374151" : "#e0e7ff",
                   primary: "#4f46e5",
-                  neutral0: "#1f1f1f",
-                  neutral5: "#1f1f1f",
-                  neutral10: "#374151",
+                  neutral0: theme === "dark" ? "#1f1f1f" : "#ffffff",
+                  neutral5: theme === "dark" ? "#1f1f1f" : "#f3f4f6",
+                  neutral10: theme === "dark" ? "#374151" : "#e5e7eb",
                   neutral20: "#4f46e5",
                   neutral30: "#4f46e5",
-                  neutral80: "#f9fafb",
+                  neutral80: theme === "dark" ? "#f9fafb" : "#1f1f1f",
                 },
               })}
             />
@@ -172,18 +173,18 @@ function Home() {
               onChange={(selected) => setSelectedCountry(selected?.value || null)}
               className="reactSelect"
               classNamePrefix="reactSelect"
-              theme={(theme) => ({
-                ...theme,
+              theme={(base) => ({
+                ...base,
                 colors: {
-                  ...theme.colors,
-                  primary25: "#374151",
+                  ...base.colors,
+                  primary25: theme === "dark" ? "#374151" : "#e0e7ff",
                   primary: "#4f46e5",
-                  neutral0: "#1f1f1f",
-                  neutral5: "#1f1f1f",
-                  neutral10: "#374151",
+                  neutral0: theme === "dark" ? "#1f1f1f" : "#ffffff",
+                  neutral5: theme === "dark" ? "#1f1f1f" : "#f3f4f6",
+                  neutral10: theme === "dark" ? "#374151" : "#e5e7eb",
                   neutral20: "#4f46e5",
                   neutral30: "#4f46e5",
-                  neutral80: "#f9fafb",
+                  neutral80: theme === "dark" ? "#f9fafb" : "#1f1f1f",
                 },
               })}
             />
@@ -195,18 +196,18 @@ function Home() {
               onChange={(selected) => setSelectedArtist(selected?.value || null)}
               className="reactSelect"
               classNamePrefix="reactSelect"
-              theme={(theme) => ({
-                ...theme,
+              theme={(base) => ({
+                ...base,
                 colors: {
-                  ...theme.colors,
-                  primary25: "#374151",
+                  ...base.colors,
+                  primary25: theme === "dark" ? "#374151" : "#e0e7ff",
                   primary: "#4f46e5",
-                  neutral0: "#1f1f1f",
-                  neutral5: "#1f1f1f",
-                  neutral10: "#374151",
+                  neutral0: theme === "dark" ? "#1f1f1f" : "#ffffff",
+                  neutral5: theme === "dark" ? "#1f1f1f" : "#f3f4f6",
+                  neutral10: theme === "dark" ? "#374151" : "#e5e7eb",
                   neutral20: "#4f46e5",
                   neutral30: "#4f46e5",
-                  neutral80: "#f9fafb",
+                  neutral80: theme === "dark" ? "#f9fafb" : "#1f1f1f",
                 },
               })}
             />

@@ -81,3 +81,17 @@ button:hover {
 button:focus {
   outline: 3px solid var(--accent);
 }
+
+:root {
+  --input-bg: #ffffff;
+  --input-text: #1f1f1f;
+  --input-border: #ccc;
+  --accent: #4f46e5;
+}
+
+[data-theme="dark"] {
+  --input-bg: #1f1f1f;
+  --input-text: #f9fafb;
+  --input-border: #4f46e5;
+}
+

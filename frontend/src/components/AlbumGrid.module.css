@@ -1,8 +1,9 @@
 .albumGrid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: justify-center;
+  justify-content: center; /* ✅ Fixed from `justify-content: justify-center` */
   gap: 1rem;
   padding: 2rem 0;
   width: 100%;
+  background-color: var(--background); /* Optional enhancement */
 }

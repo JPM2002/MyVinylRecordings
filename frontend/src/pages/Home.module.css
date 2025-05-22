@@ -32,20 +32,42 @@
 .sortDropdown {
   padding: 0.65rem 1rem;
   border-radius: 8px;
-  border: 1px solid #4f46e5;
-  background-color: #1e1e1e;
-  color: #f9fafb;
+  border: 1px solid var(--accent);
+  background-color: var(--card);
+  color: var(--text);
   font-size: 1rem;
   min-width: 280px;
   max-width: 320px;
   outline: none;
-  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+.searchInput::placeholder {
+  color: #888;
 }
 
 .searchInput:focus,
 .sortDropdown:focus {
-  box-shadow: 0 0 0 2px #818cf8;
+  box-shadow: 0 0 0 2px var(--accent);
 }
+
+.advancedToggle {
+  background-color: var(--card);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.advancedToggle:hover {
+  background-color: var(--accent);
+  color: white;
+}
+
 
 .loadingText,
 .noAlbums {
