@@ -1,0 +1,47 @@
+.albumList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.albumRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  background-color: var(--card);
+  padding: 1rem;
+  border-radius: 8px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.albumRow:hover {
+  background-color: var(--accent);
+  color: white;
+}
+
+.albumRow img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.albumInfo h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.albumInfo p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.albumInfo small {
+  font-size: 0.8rem;
+  color: var(--text);
+}

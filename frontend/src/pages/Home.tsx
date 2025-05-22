@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AlbumGrid from "../components/AlbumGrid";
+import AlbumList from "../pages/AlbumList"; // Create this new component
 import styles from "./Home.module.css";
 import Select from "react-select";
 import { useTheme } from "../context/ThemeContext";
@@ -17,12 +18,14 @@ type Album = {
 };
 
 type SortOption = "title-asc" | "title-desc" | "artist-asc" | "artist-desc" | "year-asc" | "year-desc";
+type ViewMode = "grid" | "list";
 
 function Home() {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("artist-asc");
+    const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   const [formatOptions, setFormatOptions] = useState<string[]>([]);
   const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
@@ -104,9 +107,17 @@ function Home() {
           <span className="icon">🎵</span> My Vinyl Collection
         </h1>
         <p className={styles.homeSubtitle}>Explore your favorite records</p>
-        <button onClick={toggleTheme} className={styles.themeToggle}>
-  {theme === "dark" ? "Light" : "Dark"}
-</button>
+        <div className={styles.topActions}>
+          <button onClick={toggleTheme} className={styles.themeToggle}>
+            {theme === "dark" ? "🌞 Light" : "🌙 Dark"}
+          </button>
+          <button
+            onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+            className={styles.themeToggle}
+          >
+            {viewMode === "grid" ? "📄 List View" : "🗃️ Grid View"}
+          </button>
+        </div>
 
         <div className={styles.controls}>
           <input
@@ -219,7 +230,11 @@ function Home() {
         {loading ? (
           <p className={styles.loadingText}>Loading albums...</p>
         ) : filteredAlbums.length > 0 ? (
-          <AlbumGrid albums={filteredAlbums} />
+          viewMode === "grid" ? (
+            <AlbumGrid albums={filteredAlbums} />
+          ) : (
+            <AlbumList albums={filteredAlbums} />
+          )
         ) : (
           <p className={styles.noAlbums}>No albums found.</p>
         )}
