@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AlbumGrid from "../components/AlbumGrid";
 import styles from "./Home.module.css";
 import Select from "react-select";
+import { useTheme } from "../context/ThemeContext";
 
 type Album = {
   title: string;
@@ -33,6 +34,7 @@ function Home() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     fetch("/api/albums")
@@ -102,6 +104,9 @@ function Home() {
           <span className="icon">🎵</span> My Vinyl Collection
         </h1>
         <p className={styles.homeSubtitle}>Explore your favorite records</p>
+        <button onClick={toggleTheme} className={styles.themeToggle}>
+  {theme === "dark" ? "🌞 Light" : "🌙 Dark"}
+</button>
 
         <div className={styles.controls}>
           <input

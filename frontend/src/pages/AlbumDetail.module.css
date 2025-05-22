@@ -143,3 +143,67 @@ audio {
     font-size: 0.9rem;
   }
 }
+
+.formatLinks {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.formatLink {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid #4f46e5;
+  color: #f9fafb;
+  background-color: transparent;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.formatLink.active:hover {
+  background-color: #4f46e5;
+  color: white;
+  cursor: pointer;
+}
+
+.formatLink.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: #444;
+}
+
+.downloadButtons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.downloadButton {
+  background-color: #1e1e1e;
+  border: 1px solid #6366f1;
+  color: #f9fafb;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.downloadButton:hover {
+  background-color: #4f46e5;
+  color: #fff;
+}
+
+.downloadButton.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+

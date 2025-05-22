@@ -65,6 +65,8 @@ def list_albums():
 
     return albums
 
+
+
 def get_album_detail(folder: str) -> Dict[str, Any]:
     album_path = os.path.join(RECORDINGS_DIR, folder)
     metadata_path = os.path.join(album_path, "metadata.json")
@@ -89,12 +91,21 @@ def get_album_detail(folder: str) -> Dict[str, Any]:
     audio_root = os.path.join(album_path, "Audio")
     audio_mp3 = []
     downloads = []
+    downloads_available = {
+        "mp3": False,
+        "flac": False,
+        "wav": False,
+        "raw": False
+    }
 
     if os.path.exists(audio_root):
         for fmt in os.listdir(audio_root):
             fmt_path = os.path.join(audio_root, fmt)
             if os.path.isdir(fmt_path):
-                for file in sorted(os.listdir(fmt_path)):
+                files = [f for f in os.listdir(fmt_path) if os.path.isfile(os.path.join(fmt_path, f))]
+                if files:
+                    downloads_available[fmt] = True
+                for file in sorted(files):
                     ext = os.path.splitext(file)[1].lower()
                     if ext in [".mp3", ".wav", ".flac", ".aac"]:
                         file_entry = {
@@ -111,5 +122,6 @@ def get_album_detail(folder: str) -> Dict[str, Any]:
         "frontCover": front,
         "backCover": back,
         "audio": {"mp3": audio_mp3},
-        "downloads": downloads
+        "downloads": downloads,
+        "downloadsAvailable": downloads_available
     }

@@ -13,6 +13,7 @@ type Album = {
   frontCover: string | null;
   backCover: string | null;
   audio: Record<string, AudioFile[]>;
+  downloadsAvailable: Record<string, boolean>;
 };
 
 function AlbumDetail() {
@@ -41,6 +42,7 @@ function AlbumDetail() {
 
   const meta = album.metadata;
   const mp3Tracks = album.audio["mp3"] || [];
+  const formats = ["mp3", "flac", "wav", "raw"];
 
   return (
     <div className={styles.albumDetailContainer}>
@@ -88,6 +90,27 @@ function AlbumDetail() {
           )}
         </div>
       )}
+
+      <div className={styles.downloadButtons}>
+        {formats.map((format) => {
+          const isAvailable = album.downloadsAvailable?.[format];
+          const href = isAvailable ? `/api/download/${encodeURIComponent(album.folder)}/${format}` : "#";
+
+          return (
+            <a
+              key={format}
+              href={href}
+              className={`${styles.downloadButton} ${!isAvailable ? styles.disabled : ""}`}
+              onClick={(e) => {
+                if (!isAvailable) e.preventDefault();
+              }}
+              download
+            >
+              {format.toUpperCase()}
+            </a>
+          );
+        })}
+      </div>
 
       {mp3Tracks.length > 0 && (
         <section className={styles.audioSection}>

@@ -1,17 +1,34 @@
 :root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --card: #f3f3f3;
+  --border: #ccc;
+  --accent: #4f46e5;
+  --button-bg: #f9f9f9;
+  --button-text: #1a1a1a;
+  --button-border: #ccc;
+
   font-family: 'Segoe UI', system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.6;
 
-  color-scheme: dark;
-  color: #e5e7eb;
-  background-color: #1f1f1f;
-
+  color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  --bg: #1f1f1f;
+  --text: #e5e7eb;
+  --card: #2a2a2a;
+  --border: #333;
+  --accent: #4f46e5;
+  --button-bg: #2d2d2d;
+  --button-text: #ffffff;
+  --button-border: #444;
 }
 
 /* Reset */
@@ -23,17 +40,17 @@
 
 /* Base layout */
 body {
-  background-color: #1f1f1f;
-  color: #e5e7eb;
+  background-color: var(--bg);
+  color: var(--text);
   min-height: 100vh;
 }
 
-/* Headings – keep neutral here */
+/* Headings */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.3;
   margin-bottom: 0.5rem;
-  font-size: inherit; /* 👈 Inherit instead of fixed size */
+  font-size: inherit;
 }
 
 /* Links */
@@ -48,9 +65,9 @@ a:hover {
 
 /* Buttons */
 button {
-  background-color: #2d2d2d;
-  color: white;
-  border: 1px solid #444;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--button-border);
   padding: 0.6em 1.2em;
   border-radius: 6px;
   font-size: 1rem;
@@ -59,26 +76,8 @@ button {
 }
 button:hover {
   background-color: #3a3a3a;
-  border-color: #60a5fa;
+  border-color: var(--accent);
 }
 button:focus {
-  outline: 3px solid #60a5fa;
-}
-
-/* Light mode overrides */
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #1a1a1a;
-    background-color: #ffffff;
-  }
-
-  body {
-    background-color: #f4f4f5;
-    color: #1a1a1a;
-  }
-
-  button {
-    background-color: #f9f9f9;
-    color: #1a1a1a;
-  }
+  outline: 3px solid var(--accent);
 }
